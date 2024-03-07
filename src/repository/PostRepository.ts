@@ -19,6 +19,7 @@ export const getPostByID = (userID: string) => {
       user_name: userID
     },
     select: {
+      id: true,
       image_path: true
     }
   });

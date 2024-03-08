@@ -1,27 +1,30 @@
 import { getUsername } from "@/repository/AuthRepository";
 import { createUser } from "@/repository/UserRepository";
+import { response } from "@/types";
 import { user } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<any>,) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<response>,) => {
   try {
     const attribute = req.body as user;
     const isExist = await getUsername(attribute.username);
     if(isExist) {
-      res.status(409).json({
+      return res.status(409).json({
+        'status': 409,
         'message': "Username already exist",
       });
-    } else {
-      const result = await createUser(attribute);
-      res.status(201).json({
-        message: "User is created successfully",
-        result
-      });
     }
+    const data = await createUser(attribute);
+    return res.status(201).json({
+      'status': 201,
+      'message': "User is created successfully",
+      'data': data
+    });
   } catch (error) {
-    res.status(500).json({
-      message: "Something went wrong",
-      error
+    return res.status(500).json({
+      'status': 500,
+      'message': "Something went wrong",
+      'error_info': error
     });
   }
 }

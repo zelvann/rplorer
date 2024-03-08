@@ -35,11 +35,7 @@ export const detailPost = (postID: string) => {
       likes: true,
       comment: {
         select: {
-          user: {
-            select: {
-              username: true
-            }
-          },
+          user_name: true,
           comment: true
         }
       },
@@ -124,4 +120,15 @@ export const unlike = (postID: string,username: string) => {
       }
     })
   ]);
+};
+
+export const getOwner = (postID: string) => {
+  return db.post.findFirst({
+    select: {
+      user_name: true
+    },
+    where: {
+      id: postID
+    }
+  });
 };

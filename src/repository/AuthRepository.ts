@@ -10,9 +10,9 @@ export const postisLiked = (postID: string, username: string) => {
 };
 
 export const getUsername = (user: string) => {
-  return db.user.findUniqueOrThrow({
+  return db.user.findFirst({
     where: {
       username: user
-    }
+    },
   });
 };

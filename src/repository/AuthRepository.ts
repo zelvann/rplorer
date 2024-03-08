@@ -16,3 +16,11 @@ export const getUsername = (user: string) => {
     },
   });
 };
+
+export const postidIsExisted = (postID: string) => {
+  return db.post.findFirst({
+    where: {
+      id: postID
+    }
+  });
+};

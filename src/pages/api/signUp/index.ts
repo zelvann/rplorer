@@ -6,9 +6,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<response>,) => {
   try {
-    const attribute = req.body as user;
-    const isExist = await getUsername(attribute.username);
-    if(isExist) {
+    const attribute: user = req.body;
+    const isExisted = await getUsername(attribute.username);
+    if(isExisted) {
       return res.status(409).json({
         'status': 409,
         'message': "Username already exist",

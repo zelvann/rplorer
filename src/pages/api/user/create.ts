@@ -2,41 +2,27 @@ import { post } from "@/model";
 import { getUsername, postidIsExisted } from "@/repository/AuthRepository";
 import { createPost } from "@/repository/PostRepository";
 import { response } from "@/types";
+import { responseConflict, responseCreated, responseInternalServerError } from "@/utils/http-status-response";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<response>) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<response>) : Promise<void> => {
   try {
     const attribute: post = req.body;
 
-    const postidIsUsed = await postidIsExisted(attribute.id as string);
-    if(postidIsUsed) {
-      return res.status(409).json({
-        'message': 'Post already exist',
-        'status': 409
-      });
+    const ispostIDExisted = await postidIsExisted(attribute.id as string);
+    if(ispostIDExisted) {
+      return responseConflict(res, 'PostID', true);
     }
 
-    const isUserExisted = await getUsername(attribute.user_name);
-    if(!isUserExisted) {
-      return res.status(409).json({
-        'status': 409,
-        'message': 'User does not exist in the database',
-        'data': isUserExisted
-      });
+    const isUsernameExisted = await getUsername(attribute.user_name);
+    if(!isUsernameExisted) {
+      return responseConflict(res, 'Username', false);
     }
 
     const data = await createPost(attribute);
-    return res.status(201).json({
-      'status': 201,
-      'message': 'Post is created successfully',
-      'data': data
-    });
+    return responseCreated(res,'Post', 0, data);
   } catch (error) {
-    return res.status(500).json({
-      'status': 500,
-      'message': 'Something went wrong',
-      'error_info': error
-    })
+    return responseInternalServerError(res, error);
   }
 }
 

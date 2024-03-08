@@ -1,32 +1,30 @@
 import { getUsername } from "@/repository/AuthRepository";
 import { getPost } from "@/repository/PostRepository";
 import { response } from "@/types";
+import {
+  responseAccepted,
+  responseConflict,
+  responseInternalServerError,
+} from "@/utils/http-status-response";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<response>) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<response>
+): Promise<void> => {
   try {
     const { username } = req.query;
-    
-    const isUserExisted = await getUsername(username as string);
-    if(!isUserExisted) {
-      return res.status(409).json({
-        'status': 409,
-        'message': 'User does not exist in the database',
-      });
+
+    const isUsernameExisted = await getUsername(username as string);
+    if (!isUsernameExisted) {
+      return responseConflict(res, "Username", false);
     }
 
     const result = await getPost(username as string);
-    return res.status(202).json({
-      'status': 202,
-      'message': 'Data fetched successfully',
-      'data': result
-    }); 
+    return responseAccepted(res, result);
   } catch (error) {
-    return res.status(500).json({
-      'status': 500,
-      'message': 'Something went wrong'
-    }); 
-  } 
-} 
+    return responseInternalServerError(res, error);
+  }
+};
 
 export default handler;

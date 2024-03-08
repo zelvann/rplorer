@@ -1,5 +1,5 @@
 export interface post { 
-  id: string
+  id?: string
   image_path: string
   caption?: string
   user_name: string

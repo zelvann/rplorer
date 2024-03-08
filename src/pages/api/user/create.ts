@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<response>) => {
   try {
     const attribute: post = req.body;
 
-    const postidIsUsed = await postidIsExisted(attribute.id);
+    const postidIsUsed = await postidIsExisted(attribute.id as string);
     if(postidIsUsed) {
       return res.status(409).json({
         'message': 'Post already exist',

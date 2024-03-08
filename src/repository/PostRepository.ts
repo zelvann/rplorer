@@ -5,7 +5,7 @@ import { comment, like } from "@prisma/client";
 export const createPost = (attribute: post) => {
   return db.post.create({
     data: {
-      id: attribute.id,
+      id: attribute.id as string,
       image_path: attribute.image_path,
       caption: attribute.caption,
       user_name: attribute.user_name
@@ -13,12 +13,13 @@ export const createPost = (attribute: post) => {
   });
 };
 
-export const getPostByID = (userID: string) => {
+export const getPost = (userID: string) => {
   return db.post.findMany({
     where: {
       user_name: userID
     },
     select: {
+      user_name: userID ? false : true,
       id: true,
       image_path: true
     }
@@ -50,6 +51,18 @@ export const detailPost = (postID: string) => {
   });
 };
 
+export const updatePost = (postID: string,attribute: post) => {
+  return db.post.update({
+    data: {
+      image_path: attribute.image_path,
+      caption: attribute.caption,
+      user_name: attribute.user_name
+    },
+    where: {
+      id: postID
+    }
+  })
+}
 export const deletePost = (postID: string) => {
   return db.post.delete({
     where: {

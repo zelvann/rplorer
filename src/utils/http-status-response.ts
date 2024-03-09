@@ -38,3 +38,10 @@ export const responseInternalServerError = (res: NextApiResponse<response>, erro
     'error_info': error
   });
 }
+
+export const Unauthorized = (res: NextApiResponse<response>) => {
+  return res.status(401).json({
+    'status': 401,
+    'message': 'Unauthorized'
+  });
+}

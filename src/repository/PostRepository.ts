@@ -6,20 +6,20 @@ export const createPost = (attribute: post) => {
   return db.post.create({
     data: {
       id: attribute.id as string,
-      image_path: attribute.image_path,
+      image_path: attribute.image_path as string,
       caption: attribute.caption,
       user_name: attribute.user_name
     }
   });
 };
 
-export const getPost = (userID: string) => {
+export const getPost = (username: string) => {
   return db.post.findMany({
     where: {
-      user_name: userID
+      user_name: username
     },
     select: {
-      user_name: userID ? false : true,
+      user_name: username ? false : true,
       id: true,
       image_path: true
     }
@@ -52,7 +52,6 @@ export const updatePost = (postID: string,attribute: post) => {
     data: {
       image_path: attribute.image_path,
       caption: attribute.caption,
-      user_name: attribute.user_name
     },
     where: {
       id: postID

@@ -24,19 +24,3 @@ export const postidIsExisted = (postID: string) => {
     }
   });
 };
-
-export const commentidIsExisted = (commentID: string) => {
-  return db.comment.findFirst({
-    where: {
-      id: commentID
-    }
-  });
-}
-
-export const likeidIsExisted = (likeID: string) => {
-  return db.like.findFirst({
-    where: {
-      id: likeID
-    }
-  });
-}

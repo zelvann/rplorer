@@ -22,7 +22,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<response>) : Pr
         message: "Wrong Password"
       });
     }
-    return responseAccepted(res, isUsernameExisted);
+    return res.status(202).json({
+      status: 202,
+      message: "Login Success",
+    });
   } catch (error) {
     return responseInternalServerError(res, error);
   }

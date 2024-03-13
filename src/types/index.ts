@@ -3,4 +3,5 @@ export interface response {
   message: string,
   data?: any
   error_info?: any
+  token?: any
 }

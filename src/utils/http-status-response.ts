@@ -39,9 +39,9 @@ export const responseInternalServerError = (res: NextApiResponse<response>, erro
   });
 }
 
-export const Unauthorized = (res: NextApiResponse<response>) => {
+export const responseUnauthorized = (res: NextApiResponse<response>) => {
   return res.status(401).json({
     'status': 401,
-    'message': 'Unauthorized'
+    'message': 'Invalid token'
   });
 }

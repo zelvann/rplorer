@@ -16,10 +16,10 @@ export const responseCreated = (res: NextApiResponse<response>, id: string, flag
   });
 };
 
-export const responseAccepted = (res: NextApiResponse<response>, data: any) => {
+export const responseAccepted = (res: NextApiResponse<response>, flag: boolean, data?: any) => {
   return res.status(202).json({
     'status': 202,
-    'message': 'Data is currently being processed',
+    'message': (flag ? "Login successfully" : "Data retrieved" ),
     'data': data
   });
 };
@@ -39,9 +39,9 @@ export const responseInternalServerError = (res: NextApiResponse<response>, erro
   });
 }
 
-export const responseUnauthorized = (res: NextApiResponse<response>) => {
+export const responseAuth = (res: NextApiResponse<response>, flag: number) => {
   return res.status(401).json({
     'status': 401,
-    'message': 'Invalid token'
+    'message': (flag === 0 ? "Invalid token" : "Invalid credentials")
   });
 }

@@ -2,7 +2,7 @@ import { response } from "@/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { post } from "@/model";
 import { getUsername, postidIsExisted, postisLiked } from "@/repository/AuthRepository";
-import { createComment, deletePost, detailPost, getOwner, like_transaction, unlike, updatePost } from "@/repository/PostRepository";
+import { createComment, deletePost, detailPost, like_transaction, unlike, updatePost } from "@/repository/PostRepository";
 import { responseAccepted, responseBadRequest, responseConflict, responseCreated, responseInternalServerError } from "@/utils/http-status-response";
 import { hash } from "bcrypt";
 
@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<response>): Pro
         const { edit, del, like } = req.query;
         if (req.method === "GET" && (!del && !edit)) {
           const result = await detailPost(req.query.slug[0]);
-          return responseAccepted(res, result);
+          return responseAccepted(res, false, result);
         }
 
         else if (req.method === "DELETE" && del === "true") {
@@ -42,8 +42,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<response>): Pro
             return responseCreated(res, 'Post', 4, result);
           }
           
-          const hashID = await hash("L", 10);
-          const id = hashID.replace(/\//g, "-");
+          const hashID : string = await hash("L", 10);
+          const id : string = hashID.replace(/\//g, "-");
           const result = await like_transaction({
             id: id,
             user_name: username,
@@ -63,8 +63,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<response>): Pro
           return responseConflict(res, 'Username', false);
         }
 
-        const hashID = await hash("C", 10);
-        const id = hashID.replace(/\//g, "-");
+        const hashID : string = await hash("C", 10);
+        const id : string = hashID.replace(/\//g, "-");
         const result = await createComment({
           id: id,
           comment: comment,

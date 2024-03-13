@@ -9,6 +9,7 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 import { hash } from "bcrypt";
 import { user } from "@/model";
+import { sign } from "jsonwebtoken";
 
 const handler = async (
   req: NextApiRequest,
@@ -27,6 +28,14 @@ const handler = async (
       ...attribute,
       password: hashPass,
     });
+
+    sign({username: attribute.username},
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: "1d",
+      }
+    )
+
     return responseCreated(res, "User", 0, data);
   } catch (error) {
     return responseInternalServerError(res, error);

@@ -21,7 +21,7 @@ const handler = async (
     }
 
     const result = await getPost(username as string);
-    return responseAccepted(res, result);
+    return responseAccepted(res, false, result);
   } catch (error) {
     return responseInternalServerError(res, error);
   }

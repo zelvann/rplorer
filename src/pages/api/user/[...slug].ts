@@ -20,7 +20,7 @@ const handler = async (
       }
 
       const result = await getPost(req.query.slug[0]);
-      return responseAccepted(res, result);
+      return responseAccepted(res, false, result);
     }
   } catch (error) {
     return responseInternalServerError(res, error);
